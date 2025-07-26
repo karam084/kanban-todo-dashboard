@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import useTasks from "./hooks/useTasks";
+import TaskColumn from "./components/TaskColumn";
+import TaskModal from "./components/TaskModal";
+import { Button } from "@mui/material";
 
-function App() {
-  const [count, setCount] = useState(0)
+const COLUMNS = ["backlog", "in progress", "review", "done"];
+
+export default function App() {
+  const { tasks, add, update, remove } = useTasks();
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({ title: "", description: "", column: "backlog" });
+
+  const handleDropTask = (task, newColumn) => {
+    if (task.column !== newColumn) update.mutate({ ...task, column: newColumn });
+  };
+
+  const handleEdit = (task) => {
+    setFormData(task);
+    setShowModal(true);
+  };
+
+  const handleSubmit = () => {
+    if (formData.id) update.mutate(formData);
+    else add.mutate(formData);
+    setShowModal(false);
+    setFormData({ title: "", description: "", column: "backlog" });
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <DndProvider backend={HTML5Backend}>
+      <div className="p-4">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold">Kanban Board</h1>
+          <Button variant="contained" onClick={() => setShowModal(true)}>Add Task</Button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {COLUMNS.map((col) => (
+            <TaskColumn
+              key={col}
+              column={col}
+              tasks={tasks.filter((t) => t.column === col)}
+              onDropTask={handleDropTask}
+              actions={{ onEdit: handleEdit, onDelete: remove.mutate }}
+            />
+          ))}
+        </div>
+        <TaskModal
+          open={showModal}
+          onOpenChange={setShowModal}
+          formData={formData}
+          setFormData={setFormData}
+          onSubmit={handleSubmit}
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </DndProvider>
+  );
 }
-
-export default App

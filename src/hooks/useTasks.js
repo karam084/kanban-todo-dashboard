@@ -1,46 +1,13 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
-import { getTasks, createTask, updateTask, deleteTask } from "../services/api";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { fetchTasks, createTask, updateTask, deleteTask } from "../services/taskApi";
 
-export const useTasks = () => {
+export default function useTasks() {
   const queryClient = useQueryClient();
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    ...query
-  } = useInfiniteQuery(
-    ["tasks"],
-    ({ pageParam = 1 }) => getTasks(pageParam),
-    {
-      getNextPageParam: (lastPage, pages) =>
-        lastPage.length === 5? pages.length + 1: undefined,
-    }
-  );
+  const { data: tasks = [], ...queryRest } = useQuery({ queryKey: ["tasks"], queryFn: fetchTasks });
+  const add = useMutation({ mutationFn: createTask, onSuccess: () => queryClient.invalidateQueries(["tasks"]) });
+  const update = useMutation({ mutationFn: updateTask, onSuccess: () => queryClient.invalidateQueries(["tasks"]) });
+  const remove = useMutation({ mutationFn: deleteTask, onSuccess: () => queryClient.invalidateQueries(["tasks"]) });
 
-  const addTask = useMutation(createTask, {
-    onSuccess: () => queryClient.invalidateQueries("tasks"),
-  });
-
-  const editTask = useMutation(updateTask, {
-    onSuccess: () => queryClient.invalidateQueries("tasks"),
-  });
-
-  const removeTask = useMutation(deleteTask, {
-    onSuccess: () => queryClient.invalidateQueries("tasks"),
-  });
-
-  const tasks = data?.pages.flat() || [];
-
-  return {
-    tasks,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    addTask,
-    editTask,
-    removeTask,
-    ...query,
-  };
-};
+  return { tasks, add, update, remove, ...queryRest };
+}

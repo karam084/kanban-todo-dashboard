@@ -1,48 +1,21 @@
-import { Paper, Typography } from "@mui/material";
+import { useDrag } from "react-dnd";
+import { Button } from "@mui/material";
 
-const TaskCard = ({ task }) => (
-  <Paper sx={{ p: 2, border: "1px solid #ccc", borderRadius: 2 }}>
-    <Typography variant="subtitle1" fontWeight={600}>{task.title}</Typography>
-        border: "1px solid #ddd",
-      }}
-    >
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h6" fontWeight={600} color="primary.dark">
-          {titleMap[column]}
-        </Typography>
-        <Button onClick={() => setOpen(true)} variant="contained" size="small">
-          + Add
-        </Button>
-      </Box>
-      <Droppable droppableId={column}>
-        {(provided) => (
-          <Stack
-            spacing={2}
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            {filtered.map((task, index) => (
-              <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <TaskCard task={task} />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            <div ref={observerRef} />
-            {isFetchingNextPage && <CircularProgress size={20} sx={{ mt: 2 }} />}
-            {provided.placeholder}
-          </Stack>
-        )}
-      </Droppable>
-      <TaskFormModal open={open} handleClose={() => setOpen(false)} column={column} />
-    </Paper>
+export default function TaskCard({ task, onEdit, onDelete }) {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: "TASK",
+    item: task,
+    collect: (monitor) => ({ isDragging: monitor.isDragging() }),
+  }));
+
+  return (
+    <div ref={drag} className="mb-2 p-2 bg-white rounded shadow cursor-move" style={{ opacity: isDragging ? 0.5 : 1 }}>
+      <p className="font-bold">{task.title}</p>
+      <p className="text-sm">{task.description}</p>
+      <div className="flex justify-end gap-2 mt-2">
+        <Button size="small" variant="outlined" onClick={() => onEdit(task)}>Edit</Button>
+        <Button size="small" color="error" onClick={() => onDelete(task.id)}>Delete</Button>
+      </div>
+    </div>
   );
-};
-
-export default Column;
+}
