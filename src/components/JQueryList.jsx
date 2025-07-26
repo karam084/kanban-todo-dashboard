@@ -43,8 +43,9 @@ export default function JQueryList() {
           placeholder="Enter item"
           className="form-control form-control-sm rounded-pill shadow-sm"
         />
-        <button onClick={handleAdd} className="btn btn-primary btn-sm rounded-pill shadow-sm px-3">
-          Add
+        <button onClick={handleAdd} className="btn btn-primary px-2 py-0 rounded-2 shadow-sm fw-semibold"
+        style={{ width: "150px", height: "30px" }}>
+          Add Item
         </button>
       </div>
 
@@ -64,10 +65,11 @@ export default function JQueryList() {
             <span>{item.text}</span>
             <button
               onClick={() => handleDelete(item.id)}
-              className="btn btn-sm btn-outline-danger rounded-circle"
+              className="btn btn-sm btn-danger rounded- d-flex align-items-center justify-content-center"
+               style={{ width: "50px", height: "30px" }}
               title="Delete"
             >
-              ×
+              Delete
             </button>
           </li>
         ))}
