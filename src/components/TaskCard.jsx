@@ -1,7 +1,9 @@
+// It includes the title, description, and edit/delete buttons.
 import { useDrag } from "react-dnd";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+// Mapping each task column to a specific color for the left border
 const colorMap = {
   backlog: "secondary",
   "in progress": "primary",
@@ -10,12 +12,14 @@ const colorMap = {
 };
 
 export default function TaskCard({ task, onEdit, onDelete }) {
+  // Set up the drag behavior
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "TASK",
     item: task,
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
   }));
-
+  
+  // Confirm and delete the task
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this task?")) {
       onDelete(task.id);

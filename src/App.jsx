@@ -1,13 +1,23 @@
+// Import core React functionality
 import { useState } from "react";
+
+// React DnD for drag and drop
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+
+// Custom hooks & components
 import useTasks from "./hooks/useTasks";
 import TaskColumn from "./components/TaskColumn";
 import TaskModal from "./components/TaskModal";
+
+// UI components
 import { Button, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import JQueryList from "./components/JQueryList"; // ✅ jQuery list
 
+//Jquery list
+import JQueryList from "./components/JQueryList"; 
+
+// Define task status columns
 const COLUMNS = ["backlog", "in progress", "review", "done"];
 
 export default function App() {
@@ -16,22 +26,26 @@ export default function App() {
   const [formData, setFormData] = useState({ title: "", description: "", column: "backlog" });
   const [search, setSearch] = useState("");
 
+  // Update task when dropped into a new column
   const handleDropTask = (task, newColumn) => {
     if (task.column !== newColumn) update.mutate({ ...task, column: newColumn });
   };
 
+  // Open modal with selected task for editing
   const handleEdit = (task) => {
     setFormData(task);
     setShowModal(true);
   };
 
+  // Submit task (add or update)
   const handleSubmit = () => {
     if (formData.id) update.mutate(formData);
     else add.mutate(formData);
     setShowModal(false);
     setFormData({ title: "", description: "", column: "backlog" });
   };
-
+  
+  // Filter tasks based on search
   const filteredTasks = tasks.filter((t) =>
     t.title.toLowerCase().includes(search.toLowerCase()) ||
     t.description.toLowerCase().includes(search.toLowerCase())

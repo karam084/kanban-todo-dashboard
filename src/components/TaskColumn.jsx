@@ -1,7 +1,9 @@
+// It accepts tasks for that column and handles drag-and-drop operations for moving tasks between columns.
 import { useDrop } from "react-dnd";
 import TaskCard from "./TaskCard";
 import { useEffect, useRef, useState } from "react";
 
+// Mapping for user-friendly column titles
 const columnColors = {
   backlog: "secondary",
   "in progress": "primary",
@@ -10,6 +12,7 @@ const columnColors = {
 };
 
 export default function TaskColumn({ column, tasks, onDropTask, actions }) {
+   // Setup drop zone using react-dnd
   const [, drop] = useDrop(() => ({
     accept: "TASK",
     drop: (task) => onDropTask(task, column),
