@@ -23,6 +23,18 @@
       "title": "Karam",
       "description": "Karam2",
       "column": "backlog"
+    },
+    {
+      "id": "d38e",
+      "title": "Karam",
+      "description": "Author",
+      "column": "review"
+    },
+    {
+      "id": "4abb",
+      "title": "Karam1",
+      "description": "Author",
+      "column": "done"
     }
   ]
 }

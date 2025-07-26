@@ -41,6 +41,10 @@ A modern, drag-and-drop Kanban task manager built with **React**, **Zustand**, *
 
  <img width="1290" height="617" alt="Image" src="https://github.com/user-attachments/assets/252b4331-920f-4e74-abd5-8ccaa8e713e3" />
 
+ <img width="1292" height="618" alt="Image" src="https://github.com/user-attachments/assets/e0b7d530-eeef-4ccd-983b-f33dd88ed8cb" />
+
+ <img width="1293" height="617" alt="Image" src="https://github.com/user-attachments/assets/6b670ed1-8551-40de-8628-1310c5771177" />
+
 ---
 
 ## 🧪 Bonus: jQuery Dynamic List
