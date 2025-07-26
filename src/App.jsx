@@ -6,6 +6,7 @@ import TaskColumn from "./components/TaskColumn";
 import TaskModal from "./components/TaskModal";
 import { Button, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import JQueryList from "./components/JQueryList"; // ✅ jQuery list
 
 const COLUMNS = ["backlog", "in progress", "review", "done"];
 
@@ -39,10 +40,13 @@ export default function App() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="d-flex" style={{ minHeight: "100vh", fontFamily: "Inter, sans-serif" }}>
+        {/* Sidebar */}
         <aside className="bg-white border-end p-4" style={{ width: "250px" }}>
           <h4 className="fw-bold text-dark mb-3">Kanban Board</h4>
           <p className="text-muted small mb-0">Manage your tasks visually</p>
         </aside>
+
+        {/* Main Kanban Area */}
         <main className="flex-grow-1 px-5 py-4" style={{ backgroundColor: "#f1f3f5" }}>
           <div className="row g-3 align-items-end mb-4">
             <div className="col-md">
@@ -66,6 +70,7 @@ export default function App() {
               </Button>
             </div>
           </div>
+
           <div className="row g-4">
             {COLUMNS.map((col) => (
               <div key={col} className="col-12 col-md-6 col-lg-3">
@@ -79,6 +84,14 @@ export default function App() {
             ))}
           </div>
         </main>
+
+        {/* Right-Side Bonus jQuery List */}
+        <aside className="bg-white border-start p-4" style={{ width: "300px" }}>
+          <h5 className="fw-bold mb-3">Dynamic List</h5>
+          <JQueryList />
+        </aside>
+
+        {/* Modal */}
         <TaskModal
           open={showModal}
           onOpenChange={setShowModal}

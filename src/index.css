@@ -71,3 +71,18 @@ button:focus-visible {
   max-width: 1600px;
   margin: auto;
 }
+
+.item {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.delete-btn {
+  color: red;
+  cursor: pointer;
+  font-weight: bold;
+}
