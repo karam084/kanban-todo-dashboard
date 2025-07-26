@@ -39,7 +39,7 @@ A modern, drag-and-drop Kanban task manager built with **React**, **Zustand**, *
 
 ## 📷 Screenshots
 
-![Kanban UI](./public/kanban-dashboard.png.jpg)
+![Kanban UI] <img width="1290" height="617" alt="Image" src="https://github.com/user-attachments/assets/252b4331-920f-4e74-abd5-8ccaa8e713e3" />
 
 ---
 
